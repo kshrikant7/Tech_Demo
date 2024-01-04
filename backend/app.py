@@ -2,14 +2,11 @@
 from flask import Flask, jsonify, request
 import openai, os
 from flask_cors import CORS
-from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app, origins=['*'])
 
-load_dotenv()
-
-openai.api_key = os.getenv('OPENAI_API_KEY') 
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 @app.route('/', methods=['POST'])
 def generate_content():

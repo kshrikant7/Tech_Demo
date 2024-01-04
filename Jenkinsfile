@@ -1,9 +1,13 @@
 pipeline{
+    agent any
+    environment{
+        API = credentials('openai-api-key')
+    }
     stages{
         stage('Docker Images Build and Push'){
             steps{
                 sh 'docker build -t shrikantk7/tech_frontend ./frontend/'
-                sh 'docker build -t shrikantk7/tech_backend ./backend/'
+                sh 'docker build --build-arg OPENAI_API_KEY=$API -t shrikantk7/tech_backend ./backend/'
 
                 withCredentials([usernamePassword(credentialsId: 'dockerhub',usernameVariable: 'DOCKER_USERNAME',passwordVariable: 'DOCKER_PASSWORD')]){
                     sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
