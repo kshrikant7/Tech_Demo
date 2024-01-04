@@ -2,6 +2,7 @@ pipeline{
     agent any
     environment{
         API = credentials('openai-api-key')
+        KUBECONFIG = credentials('kubeconfig')
     }
     stages{
         stage('Docker Images Build and Push'){
