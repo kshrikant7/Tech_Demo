@@ -20,8 +20,9 @@ pipeline{
         }
         stage('Deploy to Kubernetes Using Helm'){
             steps{
-                sh 'helm install frontend ./frontend/'
-                sh 'helm install backend ./backend/'
+                sh 'sudo -u sigmoid minikube start'
+                sh 'sudo -u sigmoid helm install frontend ./frontend/'
+                sh 'sudo -u sigmoid helm install backend ./backend/'
             }
         }
     }
