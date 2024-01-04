@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #contentGenerator {
+        text-align: left;
+        box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+      }
+      textarea {
+        width: 60%;
+        height: 100px;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007BFF;
+        color: white;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #generatedContent {
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+<body>
+
+<h1>Content Generator</h1>
+
+<textarea id="prompt" placeholder="Enter your prompt" rows="5" cols="50"></textarea><br><br>
+<button onclick="generateContent()">Generate</button>
+
+<br><br>
+<h1>Content</h1>
+<p id="generatedContent"></p>
+
+<script>
+  function generateContent() {
+    var prompt = document.getElementById('prompt').value;
+    var generatedContentElement = document.getElementById('generatedContent');
+
+    generatedContentElement.textContent = 'Loading...';
+  
+    fetch('/backendtest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({prompt: prompt}),
+    })
+      .then(response => response.json())
+      .then(data => {
+        generatedContentElement.textContent = data.content;
+      })
+      .catch(error => {
+        generatedContentElement.textContent = 'An error occurred while generating content.';
+      });
+  }
+  </script>
+
+</body>
+</html>
