@@ -21,7 +21,6 @@ pipeline{
         stage('Deploy to Kubernetes Using Helm'){
             steps{
                 sh 'sudo -u sigmoid minikube start'
-                sh 'sudo -u sigmoid kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/deploy/static/provider/cloud/deploy.yaml'
                 sh 'sudo -u sigmoid helm install frontend ./frontend/'
                 sh 'sudo -u sigmoid helm install backend ./backend/'
             }
