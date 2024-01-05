@@ -14,7 +14,7 @@ jobs:
     - name: Build Docker images
       run: |
         docker build -t shrikantk7/tech_frontend ./frontend/
-        docker build --build-arg OPENAI_API_KEY=$OPENAI_API_KEY -t shrikantk7/tech_backend ./backend/
+        docker build --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -t shrikantk7/tech_backend ./backend/
         
     - name: Login to DockerHub
       uses: docker/login-action@v1
