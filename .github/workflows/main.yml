@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v2
@@ -26,6 +26,11 @@ jobs:
       run: |
         docker push shrikantk7/tech_frontend
         docker push shrikantk7/tech_backend
+
+    - name: Set up kubeconfig
+      run: echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
+      env:
+        KUBECONFIG: kubeconfig.yaml
 
     - name: Deploy to Kubernetes using Helm
       run: |
