@@ -27,12 +27,9 @@ jobs:
         docker push shrikantk7/tech_frontend
         docker push shrikantk7/tech_backend
 
-    - name: Set up kubeconfig
-      run: echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
-      env:
-        KUBECONFIG: kubeconfig.yaml
-
     - name: Deploy to Kubernetes using Helm
       run: |
         helm install frontend ./frontend/
         helm install backend ./backend/
+      env:
+        KUBECONFIG: ~/.kube/config
