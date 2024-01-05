@@ -2,7 +2,7 @@ pipeline{
     agent any
     environment{
         API = credentials('openai-api-key')
-        KUBECONFIG = credentials('kubeconfig')
+        // KUBECONFIG = credentials('kubeconfig')
     }
     stages{
         stage('Docker Images Build and Push'){
@@ -20,9 +20,9 @@ pipeline{
         }
         stage('Deploy to Kubernetes Using Helm'){
             steps{
-                sh 'sudo -u sigmoid minikube start'
-                sh 'sudo -u sigmoid helm install frontend ./frontend/'
-                sh 'sudo -u sigmoid helm install backend ./backend/'
+                sh 'minikube start'
+                sh 'helm install frontend ./frontend/'
+                sh 'helm install backend ./backend/'
             }
         }
     }
