@@ -1,0 +1,33 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build Docker images
+      run: |
+        docker build -t shrikantk7/tech_frontend ./frontend/
+        docker build --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -t shrikantk7/tech_backend ./backend/
+        
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push Docker images
+      run: |
+        docker push shrikantk7/tech_frontend
+        docker push shrikantk7/tech_backend
+
+    - name: Deploy to Kubernetes using Helm
+      run: |
+        helm install frontend ./frontend/
+        helm install backend ./backend/
