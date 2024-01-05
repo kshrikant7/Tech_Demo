@@ -5,35 +5,24 @@ pipeline{
         // KUBECONFIG = credentials('kubeconfig')
     }
     stages{
-        stage('Check Docker'){
-    steps{
-        sh 'docker --version'
-    }
-}
-stage('Check PATH'){
-    steps{
-        sh 'echo $PATH'
-    }
-}
         stage('Docker Images Build and Push'){
             steps{
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        def frontendImage = docker.build("shrikantk7/tech_frontend", "./frontend/")
-                        frontendImage.push()
+                sh 'docker build -t shrikantk7/tech_frontend ./frontend/'
+                sh 'docker build --build-arg OPENAI_API_KEY=$API -t shrikantk7/tech_backend ./backend/'
 
-                        def backendImage = docker.build("shrikantk7/tech_backend", "--build-arg OPENAI_API_KEY=$API ./backend/")
-                        backendImage.push()
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub',usernameVariable: 'DOCKER_USERNAME',passwordVariable: 'DOCKER_PASSWORD')]){
+                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+
+                    sh 'docker push shrikantk7/tech_frontend'
+                    sh 'docker push shrikantk7/tech_backend'
                 }
             }
         }
-
         stage('Deploy to Kubernetes Using Helm'){
             steps{
-                sh 'minikube start'
-                sh 'helm install frontend ./frontend/'
-                sh 'helm install backend ./backend/'
+                sh 'sudo -u sigmoid minikube start'
+                sh 'sudo -u sigmoid helm install frontend ./frontend/'
+                sh 'sudo -u sigmoid helm install backend ./backend/'
             }
         }
     }
