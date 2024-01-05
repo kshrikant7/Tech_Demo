@@ -7,17 +7,18 @@ pipeline{
     stages{
         stage('Docker Images Build and Push'){
             steps{
-                sh 'docker build -t shrikantk7/tech_frontend ./frontend/'
-                sh 'docker build --build-arg OPENAI_API_KEY=$API -t shrikantk7/tech_backend ./backend/'
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        def frontendImage = docker.build("shrikantk7/tech_frontend", "./frontend/")
+                        frontendImage.push()
 
-                withCredentials([usernamePassword(credentialsId: 'dockerhub',usernameVariable: 'DOCKER_USERNAME',passwordVariable: 'DOCKER_PASSWORD')]){
-                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-
-                    sh 'docker push shrikantk7/tech_frontend'
-                    sh 'docker push shrikantk7/tech_backend'
+                        def backendImage = docker.build("shrikantk7/tech_backend", "--build-arg OPENAI_API_KEY=$API ./backend/")
+                        backendImage.push()
+                    }
                 }
             }
         }
+        
         stage('Deploy to Kubernetes Using Helm'){
             steps{
                 sh 'minikube start'
