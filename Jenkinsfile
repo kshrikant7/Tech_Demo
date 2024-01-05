@@ -5,6 +5,16 @@ pipeline{
         // KUBECONFIG = credentials('kubeconfig')
     }
     stages{
+        stage('Check Docker'){
+    steps{
+        sh 'docker --version'
+    }
+}
+stage('Check PATH'){
+    steps{
+        sh 'echo $PATH'
+    }
+}
         stage('Docker Images Build and Push'){
             steps{
                 script {
@@ -18,7 +28,7 @@ pipeline{
                 }
             }
         }
-        
+
         stage('Deploy to Kubernetes Using Helm'){
             steps{
                 sh 'minikube start'
