@@ -19,8 +19,8 @@ jobs:
 
     - name: Uninstall Helm releases
       run: |
-        helm uninstall frontend
-        helm uninstall backend
+        sudo -u sigmoid helm uninstall frontend
+        sudo -u sigmoid helm uninstall backend
       if: github.event.inputs.uninstall == 'yes'
       env:
         KUBECONFIG: ~/.kube/config
@@ -43,7 +43,7 @@ jobs:
 
     - name: Deploy to Kubernetes using Helm
       run: |
-        helm install frontend ./frontend/
-        helm install backend ./backend/
+        sudo -u sigmoid helm install frontend ./frontend/
+        sudo -u sigmoid helm install backend ./backend/
       env:
         KUBECONFIG: ~/.kube/config
