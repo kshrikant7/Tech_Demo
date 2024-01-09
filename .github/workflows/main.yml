@@ -1,6 +1,12 @@
 name: CI/CD
 
 on:
+  workflow_dispatch:
+    inputs:
+      uninstall:
+        description: 'Uninstall Helm releases?'
+        required: true
+        default: 'no'
   push:
     branches: [ main ]
 
@@ -10,6 +16,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Uninstall Helm releases
+      run: |
+        helm uninstall frontend
+        helm uninstall backend
+      if: github.event.inputs.uninstall == 'yes'
+      env:
+        KUBECONFIG: ~/.kube/config
 
     - name: Build Docker images
       run: |
@@ -29,7 +43,7 @@ jobs:
 
     - name: Deploy to Kubernetes using Helm
       run: |
-        sudo -u sigmoid helm install frontend ./frontend/
-        sudo -u sigmoid helm install backend ./backend/
+        helm install frontend ./frontend/
+        helm install backend ./backend/
       env:
         KUBECONFIG: ~/.kube/config
