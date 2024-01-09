@@ -13,7 +13,7 @@ on:
 jobs:
   uninstall:
     runs-on: self-hosted
-    if: github.event.inputs.uninstall == 'yes'
+    if: github.event_name == 'workflow_dispatch' || github.event.inputs.uninstall == 'yes'
     steps:
     - uses: actions/checkout@v2
 
@@ -25,9 +25,9 @@ jobs:
         KUBECONFIG: ~/.kube/config
 
   build:
-    needs: uninstall
+    # needs: uninstall
     runs-on: self-hosted
-    if: github.event.inputs.uninstall != 'yes'
+    if: github.event_name == 'push' || github.event.inputs.uninstall == 'no' 
     steps:
     - uses: actions/checkout@v2
 
