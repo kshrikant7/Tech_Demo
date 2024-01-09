@@ -25,7 +25,6 @@ jobs:
         KUBECONFIG: ~/.kube/config
 
   build:
-    # needs: uninstall
     runs-on: self-hosted
     if: github.event_name == 'push' || github.event.inputs.uninstall == 'no' 
     steps:
