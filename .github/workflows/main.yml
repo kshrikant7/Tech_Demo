@@ -11,9 +11,9 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  uninstall:
     runs-on: self-hosted
-
+    if: github.event.inputs.uninstall == 'yes'
     steps:
     - uses: actions/checkout@v2
 
@@ -21,9 +21,15 @@ jobs:
       run: |
         sudo -u sigmoid helm uninstall frontend
         sudo -u sigmoid helm uninstall backend
-      if: github.event.inputs.uninstall == 'yes'
       env:
         KUBECONFIG: ~/.kube/config
+
+  build:
+    needs: uninstall
+    runs-on: self-hosted
+    if: github.event.inputs.uninstall != 'yes'
+    steps:
+    - uses: actions/checkout@v2
 
     - name: Build Docker images
       run: |
