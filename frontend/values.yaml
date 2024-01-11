@@ -54,7 +54,7 @@ ingress:
     - host: shrikantk.com
       paths:
         - path: /frontend
-          pathType: Prefix
+          pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
