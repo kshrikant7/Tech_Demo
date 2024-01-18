@@ -49,6 +49,7 @@ jobs:
     - name: Start minikube and install ingress-nginx controller
       run: |
         minikube start
+        kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
 
     - name: Deploy to Kubernetes using Helm
       run: |
