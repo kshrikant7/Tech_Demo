@@ -46,6 +46,10 @@ jobs:
         docker push shrikantk7/tech_frontend
         docker push shrikantk7/tech_backend
 
+    - name: Start minikube and install ingress-nginx controller
+      run: |
+        minikube start
+
     - name: Deploy to Kubernetes using Helm
       run: |
         sudo -u sigmoid helm install frontend ./frontend/
