@@ -52,6 +52,8 @@ jobs:
 
     - name: Install ingress-nginx controller
       run: |
+        kubectl delete job -n ingress-nginx ingress-nginx-admission-create
+        kubectl delete job -n ingress-nginx ingress-nginx-admission-patch
         kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
 
     - name: Deploy to Kubernetes using Helm
