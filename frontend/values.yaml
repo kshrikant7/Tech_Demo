@@ -47,8 +47,8 @@ service:
 
 ingress:
   enabled: true
-  className: ""
-  annotations: 
+  className: nginx
+  annotations:  
     nginx.ingress.kubernetes.io/rewrite-target: /
   hosts:
     - host: shrikantk.com
