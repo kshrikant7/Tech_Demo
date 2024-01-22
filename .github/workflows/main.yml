@@ -56,7 +56,7 @@ jobs:
         
     - name: Deploy to Kubernetes using Helm
       run: |
-        sleep 15
+        sleep 20
         sudo -u sigmoid helm install frontend ./frontend/
         sudo -u sigmoid helm install backend ./backend/
       env:
