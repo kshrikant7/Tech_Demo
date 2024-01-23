@@ -25,7 +25,7 @@ jobs:
         KUBECONFIG: ~/.kube/config
 
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.inputs.uninstall == 'no' 
     steps:
     - uses: actions/checkout@v2
