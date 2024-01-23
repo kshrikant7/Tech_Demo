@@ -12,7 +12,7 @@ on:
 
 jobs:
   uninstall:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: github.event.inputs.uninstall == 'yes'
     steps:
     - uses: actions/checkout@v2
